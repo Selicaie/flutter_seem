@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "645178257076",
+    "firebase_url": "https://instructions-37253.firebaseio.com",
+    "project_id": "instructions-37253",
+    "storage_bucket": "instructions-37253.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645178257076:android:685f56922e5dc8874df1e1",
+        "android_client_info": {
+          "package_name": "com.example.instructions_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645178257076-3mg1ltgjqj2abu92ejei6viembuasce0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl3w-4SUZwoxLO1XoHZr50FHgFq4SOPAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645178257076-3mg1ltgjqj2abu92ejei6viembuasce0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -48,7 +48,9 @@ dependencies:
   # google_sign_in: ^4.5.3
   #flutter_sound: ^4.0.4+1
   audioplayers: ^0.15.1
+#  audioplayers: ^0.17.4
   flutter_sound: ^7.8.4
+  record_mp3: ^2.1.0
   permission_handler:
   path:
   assets_audio_player:

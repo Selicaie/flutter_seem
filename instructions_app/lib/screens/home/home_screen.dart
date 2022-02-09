@@ -12,7 +12,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 final List<String> choices = const <String> [
-  'Logout' 
+  'تسجيل خروج'
 ];
 
 const mnuLogout = 'Logout';
@@ -145,10 +145,10 @@ void select (String value) async {
    context: context,
    builder: (BuildContext context) {
     return AlertDialog(
-     title: Text("Some Permissions were Denied !!"),
-     content:const Text('Please enabel Permission for microphone & storage'),
+     title: Text("هناك بعض الصلاحيات لم يسرح بها !!"),
+     content:const Text('من فضلك اعطنا صلاحيات التخزين و الميكروفون'),
      actions: <Widget>[
-       FlatButton(child: Text('Ok'),
+       FlatButton(child: Text('تم'),
        onPressed: () {
          openAppSettings();
          Navigator.pop(context);
@@ -183,17 +183,17 @@ Future<bool> _onBackPressed() {
   return showDialog(
     context: context,
     builder: (context) => new AlertDialog(
-      title: new Text('Are you sure?'),
-      content: new Text('Do you want to exit an App'),
+      title: new Text('هل انت متاكد'),
+      content: new Text('هل تريد الخروج من التطبيق؟'),
       actions: <Widget>[
         new GestureDetector(
           onTap: () => Navigator.of(context).pop(false),
-          child: Text("NO"),
+          child: Text("لا"),
         ),
         SizedBox(height: 16),
         new GestureDetector(
           onTap: () => Navigator.of(context).pop(true),
-          child: Text("YES"),
+          child: Text("نعم"),
         ),
       ],
     ),
@@ -240,7 +240,7 @@ Future<bool> _onBackPressed() {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("Welcome " + _name,style: style),
+              accountName: Text("مرحبا بك " + _name,style: style),
               accountEmail: Text(_username+"@mcit.gov.eg"),
               decoration:  BoxDecoration(
                 color: Colors.deepOrange,
@@ -263,7 +263,7 @@ Future<bool> _onBackPressed() {
             //   ),
             // ),
             ListTile(
-              title: Text('Seems',style: itemStyle),
+              title: Text('الرسائل',style: itemStyle),
               trailing: Icon(Icons.arrow_forward),
               leading: Icon(Icons.verified_user),
               onTap: () {
@@ -274,7 +274,7 @@ Future<bool> _onBackPressed() {
             Visibility( 
         visible: _admin,
         child: ListTile(
-               title: Text('Groups',style: itemStyle),
+               title: Text('مجموعه',style: itemStyle),
                trailing: Icon(Icons.arrow_forward),
                leading: Icon(Icons.supervised_user_circle),
               onTap: () {
@@ -286,7 +286,7 @@ Future<bool> _onBackPressed() {
            Visibility( 
         visible: _admin,
         child: ListTile(
-               title: Text('Send Seems',style: itemStyle),
+               title: Text('ارسال رساله',style: itemStyle),
                trailing: Icon(Icons.arrow_forward),
                leading: Icon(Icons.send),
               onTap: () {
@@ -335,7 +335,7 @@ Future<bool> _onBackPressed() {
       //   ) ,
        ),
         child:Center(        
-        child: new  Text("Welcome " + _name ,style: itemStyle,),
+        child: new  Text("مرحبا بك  " + _name ,style: itemStyle,),
       )
       )
      

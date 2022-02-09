@@ -169,7 +169,7 @@ Widget getDropdown(List<dynamic> lst,int type) {
                     onChanged: (value)=>updateCurrent(value,type),
                     isExpanded: true,                  
                  
-                    hint: Text(type == 1 ?'Select User':'Select Group'),
+                    hint: Text(type == 1 ?'اختار شخص':'اختار مجموعه'),
                   );
             
 }
@@ -183,7 +183,7 @@ Widget getDropdown(List<dynamic> lst,int type) {
       appBar: AppBar(
         backgroundColor: Colors.deepOrange,
         automaticallyImplyLeading: false,
-        title: Text("User Groups"),
+        title: Text("اختيار مجموعه للاشخاص"),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: select,
@@ -219,13 +219,13 @@ Widget getDropdown(List<dynamic> lst,int type) {
                 ? Text("UserName: " +
                     _currentUser.username                    
                    )
-                : Text("No User selected"),
+                : Text("لم يتم تحديد مستخدم"),
                 Padding(
             padding: EdgeInsets.only(top:15.0, bottom: 15.0),
             child: getDropdown(serviceList,2) ),
              _currentService != null
                 ? Text("Color: " + _currentService.name)
-                : Text("No Group selected"),
+                : Text("لم يتم اختيار مجموعة"),
           // Center(child:
           //   ListTile(
           //   onTap: () {},
@@ -353,10 +353,10 @@ showAlert(BuildContext context,int type) {
             Text('  Alert ')
             ]
           ),
-        content: type==1?Text("Are You Sure Want To Proceed?"):Text("Are You Sure Want To Delet?"),
+        content: type==1?Text("هل أنت متأكد من أنك تريد المتابعة؟"):Text("هل أنت متأكد من أنك تريد الحذف؟"),
         actions: <Widget>[
           FlatButton(
-            child: Text("YES"),
+            child: Text("نعم"),
             onPressed: () {
               //Put your code here which you want to execute on Yes button click.
               if(type==1)
@@ -377,7 +377,7 @@ showAlert(BuildContext context,int type) {
           ),
 
            FlatButton(
-            child: Text("CANCEL"),
+            child: Text("لا"),
             onPressed: () {
               //Put your code here which you want to execute on Cancel button click.
               Navigator.of(context).pop();

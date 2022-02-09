@@ -19,6 +19,7 @@ import 'package:instructions_app/services/firebaseAuth.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:record_mp3/record_mp3.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:path/path.dart' as path;
@@ -29,7 +30,7 @@ import 'package:file/local.dart';
 //import 'package:path_provider/path_provider.dart';
 
 final List<String> choices = const <String> [
-  'Logout' 
+  'Logout'
 ];
 
 const mnuLogout = 'Logout';
@@ -100,9 +101,9 @@ class AdminHomeState extends State {
     await _myRecorder.setSubscriptionDuration(Duration(milliseconds: 10));
     //await initializeDateFormatting();
 
-    await Permission.microphone.request();
-    await Permission.storage.request();
-    //await Permission.manageExternalStorage.request();
+    // await Permission.microphone.request();
+    // await Permission.storage.request();
+    // await Permission.manageExternalStorage.request();
   }
 
 _permissionGrant() async {
@@ -114,10 +115,10 @@ _permissionGrant() async {
    context: context,
    builder: (BuildContext context) {
     return AlertDialog(
-     title: Text("Some Permissions were Denied !!"),
-     content:const Text('Please enabel Permission for microphone & storage'),
+     title: Text("هناك بعض الصلاحيات لم يسرح بها !!",style: TextStyle(fontWeight: FontWeight.bold),),
+     content:const Text('من فضلك اعطنا صلاحيات التخزين و الميكروفون',style: TextStyle(fontWeight: FontWeight.bold),),
      actions: <Widget>[
-       FlatButton(child: Text('Ok'),
+       FlatButton(child: Text('تم',style: TextStyle(fontWeight: FontWeight.bold),),
        onPressed: () {
          openAppSettings();
          Navigator.pop(context);
@@ -207,19 +208,19 @@ Future<bool> _onBackPressed() {
   return showDialog(
     context: context,
     builder: (context) => new AlertDialog(
-      title: new Text('Are you sure?'),
-      content: new Text('Do you want to exit?'),
+      title: new Text('هل انت متاكد',style: TextStyle(fontWeight: FontWeight.bold),),
+      content: new Text('هل تريد الخروج من التطبيق؟',style: TextStyle(fontWeight: FontWeight.bold),),
       actions: <Widget>[
         new GestureDetector(
           onTap: () => Navigator.of(context).pop(false),
-          child: Text("NO"),
+          child: Text("لا",style: TextStyle(fontWeight: FontWeight.bold),),
         ),
         SizedBox(height: 16),
         new GestureDetector(
           onTap: () {
             //_timer.cancel();
             Navigator.of(context).pop(true);},
-          child: Text("YES"),
+          child: Text("نعم",style: TextStyle(fontWeight: FontWeight.bold),),
         ),
       ],
     ),
@@ -312,7 +313,7 @@ Future<bool> _onBackPressed() {
                     onChanged: (value)=>updateCurrent(value,type),
                     isExpanded: true,                  
                  
-                    hint: Text(type == 1 ?'Select User':'Select Group'),
+                    hint: Text(type == 1 ?'اختار شخص':'اختار مجموعه',style: TextStyle(fontWeight: FontWeight.bold),),
                   );
             
 }
@@ -334,7 +335,7 @@ Future<bool> _onBackPressed() {
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text("Welcome " + _name,style: style),
+              accountName: Text("مرحبا بك  " + _name,style: style),
               accountEmail: Text(_username+"@mcit.gov.eg"),
               decoration:  BoxDecoration(
                 color: Colors.deepOrange,
@@ -357,7 +358,7 @@ Future<bool> _onBackPressed() {
             //   ),
             // ),
             ListTile(
-              title: Text('Seems',style: itemStyle),
+              title: Text('الرسائل',style: itemStyle),
               trailing: Icon(Icons.arrow_forward),
               leading: Icon(Icons.verified_user),
               onTap: () {
@@ -368,7 +369,7 @@ Future<bool> _onBackPressed() {
             Visibility( 
         visible: _admin,
         child: ListTile(
-               title: Text('Groups',style: itemStyle),
+               title: Text('مجموعه',style: itemStyle),
                trailing: Icon(Icons.arrow_forward),
                leading: Icon(Icons.supervised_user_circle),
               onTap: () {
@@ -388,7 +389,7 @@ Future<bool> _onBackPressed() {
       appBar: AppBar(
         backgroundColor: Colors.deepOrange,
         // automaticallyImplyLeading: true,
-        title: Text("Send Seems"),
+        title: Text("ارسال رساله",style: TextStyle(fontWeight: FontWeight.bold),),
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: select,
@@ -406,26 +407,27 @@ Future<bool> _onBackPressed() {
            ),
       drawer:drawer,
       body://serviceModel());
-      new Container(
-        decoration: BoxDecoration(
-        image: backgroundImage
-        ),
-        child:
-      Padding( 
-        padding: EdgeInsets.only(top:10.0),
-        child:Column(
+      SingleChildScrollView(
+        child: new Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+          image: backgroundImage
+          ),
+          child:
+        Column(
         children: <Widget>[
           // _appBar(),
           chatModel(),
-          Flexible(
+          Expanded(
             child:
             !_isLoading && instructions.length>0?instructioListItems(): Text(''),
           ),
 
         ],
-          ),
-                  ) 
-                )));
+          )
+                  ),
+      )));
               }
 
               Color color;
@@ -468,7 +470,7 @@ Future<bool> _onBackPressed() {
                       onPressed: () {setState(() {
                         updateCurrentService(4,"YELLOW","#FFFF00");
                       });},
-                    child: Text("Ready"),
+                    child: Text("مستعد",style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
 
                    Button3d(
@@ -490,7 +492,7 @@ Future<bool> _onBackPressed() {
                     onPressed: () {setState(() {
                       updateCurrentService(11,"RED","#FF0000");
                     });},
-                    child: Text("Coming down"),
+                    child: Text("ينزل",style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
                 ],
               ),
@@ -520,7 +522,7 @@ Future<bool> _onBackPressed() {
                     onPressed: () {setState(() {
                       updateCurrentService(1,"PURPLE","#800080");
                     });},
-                  child: Text("Guest hurry"),
+                  child: Text("الضيوف",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
 
                  Button3d(
@@ -542,7 +544,7 @@ Future<bool> _onBackPressed() {
                   onPressed: () {setState(() {
                     updateCurrentService(16,"GREEN","#008000");
                   });},
-                  child: Text("Entrance"),
+                  child: Text("مدخل",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
                  ],
               ),
@@ -573,7 +575,7 @@ Future<bool> _onBackPressed() {
                     onPressed: () {setState(() {
                       updateCurrentService(20,"BLACK","#000000");
                     });},
-                  child: Text("An hour delay",style:TextStyle(color: Colors.white ,)),
+                  child: Text("تاخير ساعه",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white ),),
 
                 ),
 
@@ -596,7 +598,7 @@ Future<bool> _onBackPressed() {
                   onPressed: () {setState(() {
                     updateCurrentService(5,"ORANGE","#FFA500");
                   });},
-                  child: Text("IT Help"),
+                  child: Text("IT مساعد",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
 
 
@@ -629,7 +631,7 @@ Future<bool> _onBackPressed() {
                   onPressed: () {setState(() {
                     updateCurrentService(19,"BLUE","#0000FF");
                   });},
-                  child: Text("Move from home"),
+                  child: Text("المنزل",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
 
                  Button3d(
@@ -649,7 +651,7 @@ Future<bool> _onBackPressed() {
                   onPressed: () {setState(() {
                     updateCurrentService(21,"GRAY","#808080");
                   });},
-                  child: Text("Half an hour delay"),
+                  child: Text("تاخير نص ساعه",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
                 ],
               ),
@@ -657,7 +659,7 @@ Future<bool> _onBackPressed() {
      
              _currentService != null
                 ? Text("Group: " + _currentService.name)
-                : Text("No Group selected")
+                : Text("لم تختار مجموعه",style: TextStyle(fontWeight: FontWeight.bold),)
        ,
       Row(children: <Widget>[
               Visibility( 
@@ -735,7 +737,7 @@ Future<bool> _onBackPressed() {
               },
             onChanged: (value)=> this.updateMessage(),
                         decoration: InputDecoration(
-                          labelText: "Type Message...",
+                          labelText: "اكتب رسالتك...",
                           //labelStyle: textStyle,
                           //border: InputBorder.none,
                           border: OutlineInputBorder(
@@ -799,19 +801,19 @@ Future<bool> _onBackPressed() {
     return Icon(Icons.check_box,
     color: Colors.deepOrange,
       size: 20.0,
-      semanticLabel: 'All persons recieved message',
+      semanticLabel: 'كل الاشخاص استلمت الرساله بنجاح',
     );
     else if(item.status == "1")
     return Icon(Icons.check,
     color: Colors.pink,
       size: 20.0,
-      semanticLabel: 'Somebody recieved message',
+      semanticLabel: 'بعض الاشخاص استلمت الرساله بنجاح',
     );
     else
     return Icon(Icons.access_time,
       color: Colors.pink,
       size: 20.0,
-      semanticLabel: 'Nobody recieved message',
+      semanticLabel: 'لم يستلم احد الرساله',
     );
   }
  
@@ -839,7 +841,7 @@ Future<bool> _onBackPressed() {
                       padding: EdgeInsets.all(10.0),
                       child: Column(
                         // Replace with a Row for horizontal icon + text
-                        children: <Widget>[Icon(Icons.add), Text("Add")],
+                        children: <Widget>[Icon(Icons.add), Text("ضيف")],
                       )),
                 ],
               )));
@@ -869,19 +871,19 @@ Future<bool> _onBackPressed() {
                       await DatabaseService(uid: uId).updateMessageData(instruction.message,instruction.serviceId.toString());
                      }
                       getData();
-                      Toast.show("Instruction sent successfully!!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+                      Toast.show("تم ارسال التعليمات بنجاح", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
                     }                    
                     else
-                    Toast.show("Failed to send instruction !!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+                    Toast.show("فشل ارسال التعليمات", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
                     });
                 }
                 else
-                    Toast.show("Please write message !!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+                    Toast.show("من فضلك اكتب رسالتك", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
            
               }
               else {
         Scaffold.of(context).showSnackBar(
-            new SnackBar(content: new Text("You must select group !!")));
+            new SnackBar(content: new Text("من فضلك اختار مجموعه")));
       }
                  
             }
@@ -908,16 +910,16 @@ Future<bool> _onBackPressed() {
                       await DatabaseService(uid: uId).updateMessageData(instruction.message,instruction.serviceId.toString());
                      }
                       getData();
-                      Toast.show("Instruction sent successfully!!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+                      Toast.show("تم ارسال التعليمات بنجاح", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
                     }                    
                     else
-                    Toast.show("Failed to send instruction !!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+                    Toast.show("فشل ارسال التعليمات", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
                     });
                
               }
               else {
         Scaffold.of(context).showSnackBar(
-            new SnackBar(content: new Text("You must select group !!")));
+            new SnackBar(content: new Text("من فضلك اختار مجموعه")));
       }
                  
             }
@@ -1014,56 +1016,119 @@ Future<bool> _onBackPressed() {
 
   Future<void> _start() async {
     if( _currentService!=null) {
-    io.Directory dir = io.Directory(path.dirname(filePath)) ;
-     // io.Directory dir = await getApplicationDocumentsDirectory();
-      //filePath = dir.path+'/temp.wave'  ;
-    if (!dir.existsSync()) {
-      dir.createSync();
-    }
-    _myRecorder.openAudioSession();
-    await _myRecorder.startRecorder(
-      toFile: filePath,
-      codec: Codec.aacMP4,
-    );
-
-    setState(() {
-      _isRecording = _myRecorder.isRecording;
-      print(_isRecording);
-      // _recorderTxt = txt.substring(0, 8);
-    });
-
-    StreamSubscription _recorderSubscription = _myRecorder.onProgress.listen((e) {
-      var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
-      var txt =  date.toString();
-      print(e.duration.inMilliseconds);
-    });
-    _recorderSubscription.cancel();
-    }
-    else {
+    // // io.Directory dir = io.Directory(path.dirname(filePath)) ;
+    //  io.Directory dir = await getApplicationDocumentsDirectory();
+    //   filePath = dir.path+'/temp'  ;
+    // if (!dir.existsSync()) {
+    //   dir.createSync();
+    // }
+    // _myRecorder.openAudioSession();
+    // await _myRecorder.startRecorder(
+    //   toFile: filePath,
+    //   codec: Codec.aacMP4,
+    // );
+    //
+    // setState(() {
+    //   _isRecording = _myRecorder.isRecording;
+    //   print(_isRecording);
+    //   // _recorderTxt = txt.substring(0, 8);
+    // });
+    //
+    // StreamSubscription _recorderSubscription = _myRecorder.onProgress.listen((e) {
+    //   var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
+    //   var txt =  date.toString();
+    //   print(e.duration.inMilliseconds);
+    // });
+    // _recorderSubscription.cancel();
+      startRecord();
+    } else {
       Scaffold.of(context).showSnackBar(
-          new SnackBar(content: new Text("You must Select category")));}
+          new SnackBar(content: new Text("من فضلك اختار مجموعه")));}
   }
 
    _stop() async {
-    _myRecorder.closeAudioSession();
-    await _myRecorder.stopRecorder();
+    // await _myRecorder.stopRecorder();
     // File file = await localFileSystem.file('/storage/emulated/0/Download/temp.AAC');
     //print("  File length: ${await file.length()}");
     //String filename = file.path.split('/').last;
-     io.File file = io.File(filePath);
-    String filename = file.path.split('/').last;
-    print(file.path+'...'+filename);
-    setState(() => _isLoading = true);
-    if( _currentService!=null)
-      await api.uploadFile(filename,file.path,_currentService.id).then((value) async {
-        setState(() { _isLoading = false;_isRecording=_myRecorder.isRecording;});
-        if(uId!=null){
-          print('send message to user id:${uId}');
-          await DatabaseService(uid: uId).updateMessageData("Voice Message ..",_currentService.id.toString());
-        }
-        Toast.show("Instruction sent successfully!!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+    // io.File file = io.File(filePath);
+    // String filename = file.path.split('/').last;
+    // print(file.path+'...'+filename);
+    // setState(() => _isLoading = true);
+    // if( _currentService!=null)
+    //   await api.uploadFile(filename,file.path,_currentService.id).then((value) async {
+    //     print('value of uploading $value');
+    //     setState(() { _isLoading = false;_isRecording=_myRecorder.isRecording;});
+    //     if(uId!=null){
+    //       print('send message to user id:${uId}');
+    //       await DatabaseService(uid: uId).updateMessageData("Voice Message ..",_currentService.id.toString());
+    //     }
+    //     Toast.show("تم ارسال التعليمات بنجاح", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+    //   });
+    // _myRecorder.closeAudioSession();
+     stopRecord();
+  }
+
+
+   startRecord() async {
+
+      print("Recording...");
+      recordFilePath = await getFilePath();
+      setState(() {
+
+      });
+      setState(() {
+        _isRecording = RecordMp3.instance.start(recordFilePath, (type) {
+          print("Record error--->$type");
+        });
       });
 
+    }
+
+
+
+  String recordFilePath;
+
+   stopRecord() async {
+    bool s = await RecordMp3.instance.stop();
+    if(s && io.File(recordFilePath).existsSync()) {
+      io.File file = io.File(recordFilePath);
+      String filename = file.path
+          .split('/')
+          .last;
+      print(file.path + '...' + filename);
+      print("  File length: ${await file.length()}");
+      setState(() => _isLoading = true);
+      if (_currentService != null)
+        await api.uploadFile(filename, file.path, _currentService.id).then((
+            value) async {
+          print('value of uploading $value');
+          setState(() {
+            _isLoading = false;
+            _isRecording = _myRecorder.isRecording;
+          });
+          if (uId != null) {
+            print('send message to user id:${uId}');
+            await DatabaseService(uid: uId).updateMessageData(
+                "Voice Message ..", _currentService.id.toString());
+          }
+          Toast.show(
+              "تم ارسال التعليمات بنجاح", context, duration: Toast.LENGTH_SHORT,
+              gravity: Toast.CENTER);
+        });
+    }
+  }
+
+  int i = 0;
+
+  Future<String> getFilePath() async {
+    io.Directory storageDirectory = await getApplicationDocumentsDirectory();
+    String sdPath = storageDirectory.path + "/record";
+    var d = io.Directory(sdPath);
+    if (!d.existsSync()) {
+      d.createSync(recursive: true);
+    }
+    return sdPath + "/test_${i++}.mp3";
   }
 
 void playRemoteFile(url){

@@ -123,19 +123,19 @@ Future<bool> _onBackPressed() {
   return showDialog(
     context: context,
     builder: (context) => new AlertDialog(
-      title: new Text('Are you sure?'),
-      content: new Text('Do you want to exit?'),
+      title: new Text('هل انت متاكد'),
+      content: new Text('هل تريد الخروج من التطبيق؟'),
       actions: <Widget>[
         new GestureDetector(
           onTap: () => Navigator.of(context).pop(false),
-          child: Text("NO"),
+          child: Text("لا"),
         ),
         SizedBox(height: 16),
         new GestureDetector(
           onTap: () {
             //_timer.cancel();
             Navigator.of(context).pop(true);},
-          child: Text("YES"),
+          child: Text("نعم"),
         ),
       ],
     ),
@@ -222,7 +222,7 @@ Future<bool> _onBackPressed() {
                     onChanged: (value)=>updateCurrent(value,type),
                     isExpanded: true,                  
                  
-                    hint: Text(type == 1 ?'Select User':'Select Group'),
+                    hint: Text(type == 1 ?'اختار شخص':'اختار مجموعه'),
                   );
             
 }
@@ -245,7 +245,7 @@ Future<bool> _onBackPressed() {
       appBar: AppBar(
         backgroundColor: Colors.deepOrange,
         // automaticallyImplyLeading: true,
-        title: Text("Send Seems"),
+        title: Text("ارسال رساله"),
            ),
       body://serviceModel());
       new Container(
@@ -327,7 +327,7 @@ Future<bool> _onBackPressed() {
                     onPressed: () {updateCurrentService(4,"YELLOW","#FFFF00");},
                     //padding: EdgeInsets.all(25.0),
                     shape:StadiumBorder(), 
-                   child: Text('Ready'),
+                   child: Text('مستعد'),
                    textColor: Colors.white,
                     color: Colors.yellow,
                   ),                    

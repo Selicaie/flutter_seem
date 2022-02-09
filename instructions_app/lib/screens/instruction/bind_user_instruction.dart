@@ -34,7 +34,7 @@ class BindUserInstructionsState extends State  {
   Widget build(BuildContext context) {  
     return Scaffold(
       appBar: new AppBar(
-        title: new Text("User Groups"),
+        title: new Text("اختيار مجموعه للاشخاص"),
         backgroundColor: Colors.deepOrange),
         body:
         finalWidget(),
@@ -53,7 +53,7 @@ class BindUserInstructionsState extends State  {
   Widget finalWidget()
   {
     if(instructions == null)
-      return noDataView("No data found");
+      return noDataView("لا يوجد شئ لعرضه");
 
     if(_isLoading && instructions.length==0)
     return loadingView();//Loading();
@@ -72,7 +72,7 @@ class BindUserInstructionsState extends State  {
     // child: instructioListItems(),);
     // } 
     else
-    return noDataView("No data found");
+    return noDataView("لا يوجد شئ لعرضه");
 
   }
   Widget noDataView(String msg) => Center(

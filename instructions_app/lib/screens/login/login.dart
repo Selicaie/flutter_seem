@@ -121,7 +121,7 @@ void initState(){
                 
                 } else {
                   setState(() => _isLoading = false);
-                  _showSnackBar("Error !!");
+                  _showSnackBar("خطا!!");
                 }
               }
       
@@ -213,8 +213,8 @@ DecorationImage backgroundImage = new DecorationImage(
             color: Colors.white,
           ),
           border: InputBorder.none,
-          hintText: "ex:user",
-          labelText: "UserName",
+          hintText: "مثال: مستخدم",
+          labelText: "اسم المستخدم",
           labelStyle: const TextStyle(color: Colors.white, fontSize: 15.0),
           hintStyle: const TextStyle(color: Colors.white, fontSize: 15.0),
           contentPadding: const EdgeInsets.only(
@@ -278,8 +278,8 @@ DecorationImage backgroundImage = new DecorationImage(
             color: Colors.white,
           ),
           border: InputBorder.none,
-           hintText: "Password",
-          labelText: "Password",
+           hintText: "الرقم السرى",
+          labelText: "الرقم السرى",
           labelStyle: const TextStyle(color: Colors.white, fontSize: 15.0),
           hintStyle: const TextStyle(color: Colors.white, fontSize: 15.0),
           contentPadding: const EdgeInsets.only(
@@ -321,7 +321,7 @@ DecorationImage backgroundImage = new DecorationImage(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: _submitLogin,
-        child: Text("Login",
+        child: Text("تسجيل الدخول",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -366,7 +366,7 @@ var loginForm = new Form(
                 //textTheme: ButtonTextTheme.primary,
                 textColor: Colors.white,
                 
-                child: new Text(_obscureText ? "Show" : "Hide")),
+                child: new Text(_obscureText ? "اظهار" : "اخفاء")),
                 SizedBox(
                   height: 35.0,
                 ),
@@ -428,7 +428,7 @@ var loginForm = new Form(
   void onError(String errorTxt) async{
 
     if(errorTxt == null)
-      errorTxt = "Incorrect credentials !!";
+      errorTxt = "مدخلاتك غير صحيحه";
     _showSnackBar(errorTxt);
     setState(() => _isLoading = false);    
   }
@@ -437,7 +437,7 @@ var loginForm = new Form(
   void onSuccess(dynamic item) async {   
    
     User user =  item;
-    _showSnackBar("Welcome back "+user.username);
+    _showSnackBar("مرحبا بعودتك "+user.username);
     setState(() => _isLoading = false);
     print(user.username);
     // dynamic result = await _auth.signInWithEmailAndPassword(user.username+"@mcit.gov.eg", user.password);

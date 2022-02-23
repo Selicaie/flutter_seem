@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:aes_crypt/aes_crypt.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
 
 enum PlayerState { stopped, playing, paused }
 enum PlayingRouteState { speakers, earpiece }
@@ -24,6 +28,9 @@ class PlayerWidget extends StatefulWidget {
 class _PlayerWidgetState extends State<PlayerWidget> {
   String url;
   PlayerMode mode;
+  String savePath;
+  bool downloading = true;
+  String message;
 
   AudioPlayer _audioPlayer;
   AudioPlayerState _audioPlayerState;
@@ -52,7 +59,48 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void initState() {
     super.initState();
     _initAudioPlayer();
+    downloadFile();
   }
+
+  Future downloadFile() async {
+    try {
+     Dio dio = Dio();
+
+      String fileName = url.substring(url.lastIndexOf("/") + 1);
+
+      savePath = await getFilePath(fileName);
+      await dio.download(url, savePath, onReceiveProgress: (rec, total) {
+        setState(() {
+            downloading=true;
+            message='Downloading....';
+        });
+
+
+      } );
+      setState(() {
+        downloading=false;
+        savePath = decrypt_file(savePath); //----decryption---
+        print('--------------downloaded successfully---------------');
+      });
+    } catch (e) {
+      print(e.toString());
+      setState(() {
+        downloading=true;
+        message=e.toString();
+      });
+    }
+  }
+
+  Future<String> getFilePath(uniqueFileName) async {
+    String path = '';
+
+    Directory dir = await getApplicationDocumentsDirectory();
+
+    path = '${dir.path}/$uniqueFileName';
+
+    return path;
+  }
+
 
   @override
   void dispose() {
@@ -67,7 +115,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return downloading?Text(message)
+        :Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Row(
@@ -208,7 +257,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             _position.inMilliseconds < _duration.inMilliseconds)
         ? _position
         : null;
-    final result = await _audioPlayer.play(url, position: playPosition);
+    //final result = await _audioPlayer.play(url, position: playPosition);
+    final result = await _audioPlayer.play(savePath, position: playPosition,isLocal: true);
     if (result == 1) setState(() => _playerState = PlayerState.playing);
 
     // default playback rate is 1.0
@@ -217,6 +267,32 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     _audioPlayer.setPlaybackRate(playbackRate: 1.0);
 
     return result;
+  }
+
+  String decrypt_file(String path) {
+    AesCrypt crypt = AesCrypt();
+    crypt.setOverwriteMode(AesCryptOwMode.on);
+    crypt.setPassword('my cool password');
+    String decFilepath;
+    try {
+      decFilepath = crypt.decryptFileSync(path);
+      print('The decryption has been completed successfully.');
+      print('Decrypted file 1: $decFilepath');
+      print('File content: ' + File(decFilepath).path);
+    } catch (e) {
+      if (e.type == AesCryptExceptionType.destFileExists) {
+        print('The decryption has been completed unsuccessfully.');
+        print(e.message);
+      }
+      else{
+        setState(() {
+          downloading=true;
+          message=e.toString();
+        });
+        return 'ERROR';
+      }
+    }
+    return decFilepath;
   }
 
   Future<int> _pause() async {

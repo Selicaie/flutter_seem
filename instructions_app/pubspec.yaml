@@ -23,6 +23,7 @@ dependencies:
   #connectivity: any
   toast: any
   flutter_spinkit: ^4.1.2+1
+  dio: any
   # firebase_auth: ^0.15.3
   # cloud_firestore: ^0.13.0+1
   # firebase_storage: ^3.1.1
@@ -51,6 +52,7 @@ dependencies:
 #  audioplayers: ^0.17.4
   flutter_sound: ^7.8.4
   record_mp3: ^2.1.0
+  aes_crypt: ^0.1.1
   permission_handler:
   path:
   assets_audio_player:

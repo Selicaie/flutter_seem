@@ -3,6 +3,7 @@ import 'dart:io'as io;
 //import 'dart:developer';
 //import 'package:audio_recorder/audio_recorder.dart';
 // import 'package:button3d/button3d.dart';
+import 'package:aes_crypt/aes_crypt.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:instructions_app/components/Colors.dart';
@@ -470,7 +471,7 @@ Future<bool> _onBackPressed() {
                       onPressed: () {setState(() {
                         updateCurrentService(4,"YELLOW","#FFFF00");
                       });},
-                    child: Text("مستعد",style: TextStyle(fontWeight: FontWeight.bold),),
+                    child: Text("استعداد",style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
 
                    Button3d(
@@ -492,7 +493,7 @@ Future<bool> _onBackPressed() {
                     onPressed: () {setState(() {
                       updateCurrentService(11,"RED","#FF0000");
                     });},
-                    child: Text("ينزل",style: TextStyle(fontWeight: FontWeight.bold),),
+                    child: Text("نزول",style: TextStyle(fontWeight: FontWeight.bold),),
                   ),
                 ],
               ),
@@ -544,7 +545,7 @@ Future<bool> _onBackPressed() {
                   onPressed: () {setState(() {
                     updateCurrentService(16,"GREEN","#008000");
                   });},
-                  child: Text("مدخل",style: TextStyle(fontWeight: FontWeight.bold),),
+                  child: Text("المدخل",style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
                  ],
               ),
@@ -1091,32 +1092,36 @@ Future<bool> _onBackPressed() {
 
    stopRecord() async {
     bool s = await RecordMp3.instance.stop();
-    if(s && io.File(recordFilePath).existsSync()) {
-      io.File file = io.File(recordFilePath);
-      String filename = file.path
-          .split('/')
-          .last;
-      print(file.path + '...' + filename);
-      print("  File length: ${await file.length()}");
-      setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
+     recordFilePath =  encrypt_file(recordFilePath); //---encryption----
+    Timer(Duration(seconds: 1), () async {
+      if(s && io.File(recordFilePath).existsSync()) {
+        io.File file = io.File(recordFilePath);
+        String filename = file.path
+            .split('/')
+            .last;
+        print(file.path + '...' + filename);
+        print("  File length: ${await file.length()}");
       if (_currentService != null)
-        await api.uploadFile(filename, file.path, _currentService.id).then((
-            value) async {
-          print('value of uploading $value');
-          setState(() {
-            _isLoading = false;
-            _isRecording = _myRecorder.isRecording;
-          });
-          if (uId != null) {
-            print('send message to user id:${uId}');
-            await DatabaseService(uid: uId).updateMessageData(
-                "Voice Message ..", _currentService.id.toString());
-          }
-          Toast.show(
-              "تم ارسال التعليمات بنجاح", context, duration: Toast.LENGTH_SHORT,
-              gravity: Toast.CENTER);
-        });
+      await api.uploadFile(filename, file.path, _currentService.id).then((
+      value) async {
+      print('value of uploading $value');
+      setState(() {
+      _isLoading = false;
+      _isRecording = _myRecorder.isRecording;
+      });
+      if (uId != null) {
+      print('send message to user id:${uId}');
+      await DatabaseService(uid: uId).updateMessageData(
+      "Voice Message ..", _currentService.id.toString());
+      }
+      Toast.show(
+      "تم ارسال التعليمات بنجاح", context, duration: Toast.LENGTH_SHORT,
+      gravity: Toast.CENTER);
+      });
     }
+    });
+
   }
 
   int i = 0;
@@ -1129,6 +1134,28 @@ Future<bool> _onBackPressed() {
       d.createSync(recursive: true);
     }
     return sdPath + "/test_${i++}.mp3";
+  }
+
+
+  String encrypt_file(String path) {
+  AesCrypt crypt = AesCrypt();
+  crypt.setOverwriteMode(AesCryptOwMode.on);
+  crypt.setPassword('my cool password');
+  String encFilepath;
+  try {
+  encFilepath = crypt.encryptFileSync(path);
+  print('The encryption has been completed successfully.');
+  print('Encrypted file: $encFilepath');
+  } catch (e) {
+  if (e.type == AesCryptExceptionType.destFileExists) {
+  print('The encryption has been completed unsuccessfully.');
+  print(e.message);
+  }
+  else{
+  return 'ERROR';
+  }
+  }
+  return encFilepath;
   }
 
 void playRemoteFile(url){
